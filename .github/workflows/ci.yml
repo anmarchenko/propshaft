@@ -37,5 +37,19 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
 
+      - name: Install ddtest
+        run: |
+          curl -fsSL https://github.com/DataDog/ddtest/releases/latest/download/ddtest-linux-amd64 -o bin/ddtest
+          chmod +x bin/ddtest
+
+      - name: Configure Datadog Test Optimization
+        uses: datadog/test-visibility-github-action@v3
+        with:
+          languages: ruby
+          api_key: ${{ secrets.DD_API_KEY }}
+          site: datadoghq.com
+
       - name: Run tests
-        run: bin/test
+        run: |
+          rm -rf .testoptimization
+          bin/ddtest run --platform ruby --framework minitest --min-parallelism 1 --max-parallelism 4 --command "bin/test"
