@@ -4,7 +4,8 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "rails", ">= 7.0.1"
+gem "rails", "8.1.4"
+gem "minitest", "6.0.6"
 gem "minitest-mock"
 gem "rake"
 gem "debug"
